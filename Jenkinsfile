@@ -1,8 +1,6 @@
 pipeline {
     agent {
-        dockerfile {
-            additionalBuildArgs  '--build-arg version=1.0.2'
-        }
+        dockerfile true
     }
     stages {
         stage('build') {
