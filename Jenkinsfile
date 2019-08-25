@@ -13,7 +13,7 @@ pipeline {
             }
 
         }
-        stage('build on docker') {
+        stage('build-on-docker') {
                     agent {
                          dockerfile true
                     }
