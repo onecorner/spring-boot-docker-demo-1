@@ -5,5 +5,6 @@ node {
         sh "ls"
         sh "pwd"
         sh "echo maven-run"
+        sh "mvn -Dmaven.test.failure.ignore clean package"
     }
 }
