@@ -16,10 +16,6 @@ pipeline {
         }
         stage('docker-run') {
              agent  { dockerfile true }
-              steps {
-                  sh "pwd"
-                  sh "ls"
-               }
         }
     }
 }
