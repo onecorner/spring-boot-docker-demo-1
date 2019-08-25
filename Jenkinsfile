@@ -1,10 +1,17 @@
-node {
-    checkout scm
-
-    docker.image('maven:3-alpine').withRun() { c ->
-        sh "ls"
-        sh "pwd"
-        sh "echo maven-run"
-        sh "mvn --version"
+pipeline {
+    agent none
+    stages {
+        stage('Back-end') {
+            agent {
+                docker {
+                     image 'maven:3-alpine'
+                     args '-v /jenkins/.m2:/root/.m2'
+                }
+            }
+            steps {
+                sh 'mvn --version'
+                sh 'mvn -B -DskipTests clean package'
+            }
+        }
     }
 }
