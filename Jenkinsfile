@@ -15,8 +15,8 @@ pipeline {
         stage('docker-build&&run') {
              agent  any
              steps {
-                  sh "pwd && ls"
-                  sh "docker container run --rm zenika/alpine-maven mvn dockerfile:build --settings /var/jenkins_home/.m2/settings-docker.xml"
+                  sh "pwd && ls /var/jenkins_home/"
+                  sh "docker container run --rm zenika/alpine-maven mvn dockerfile:build"
              }
         }
         stage('docker-push') {
