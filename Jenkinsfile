@@ -5,8 +5,6 @@ node {
         sh "ls"
         sh "pwd"
         sh "echo maven-run"
-        state("build"){
-                     sh "mvn --version"
-        }
+        sh "mvn --version"
     }
 }
