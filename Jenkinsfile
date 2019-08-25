@@ -11,7 +11,7 @@ pipeline {
             steps {
                 sh 'mvn --version'
                 sh "pwd"
-                sh 'mvn -B -DskipTests clean package'
+                sh 'mvn -B -DskipTests clean package --settings /var/jenkins_home/.m2/settings-docker.xml'
 
             }
         }
