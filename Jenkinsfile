@@ -13,9 +13,10 @@ pipeline {
             }
         }
         stage('docker-build') {
-             agent  none
+             agent  any
              steps {
-                  sh "pwd && ls"
+                  sh "pwd && ls && cd /jenkins/workspace/simple-java-maven-app"
+                  sh "docker container run --rm zenika/alpine-maven mvn dockerfile:build"
              }
         }
     }
