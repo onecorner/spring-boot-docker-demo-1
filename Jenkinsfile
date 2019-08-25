@@ -13,10 +13,9 @@ pipeline {
             }
         }
         stage('docker-build') {
-             agent  any
+             agent  none
              steps {
-                  sh "pwd"
-                  sh "mvn dockerfile:build"
+                  sh "pwd && ls"
              }
         }
     }
