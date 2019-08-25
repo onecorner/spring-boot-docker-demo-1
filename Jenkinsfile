@@ -16,7 +16,7 @@ pipeline {
              agent  any
              steps {
                   sh "pwd"
-                  sh "docker ps"
+                  sh "mvn dockerfile:build"
              }
         }
     }
