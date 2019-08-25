@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        dockerfile true
-    }
+    agent any
     stages {
         stage('build') {
             agent {
@@ -13,6 +11,15 @@ pipeline {
             steps {
                 sh 'mvn -B -DskipTests clean package'
             }
+
+        }
+        stage('build on docker') {
+                    agent {
+                         dockerfile true
+                    }
+                    steps {
+                        echo "build on docker"
+                    }
 
         }
     }
