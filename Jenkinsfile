@@ -16,6 +16,7 @@ pipeline {
              agent  any
              steps {
                   sh "pwd"
+                  sh "docker ps"
              }
         }
     }
