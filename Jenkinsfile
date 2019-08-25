@@ -1,21 +1,20 @@
 pipeline {
-    agent none
+    agent {
+         docker {
+               image 'maven:3-alpine'
+               args '-v /jenkins/.m2:/root/.m2'
+         }
+    }
     stages {
-        stage('Back-end') {
-            agent {
-                docker {
-                     image 'maven:3-alpine'
-                     args '-v /jenkins/.m2:/root/.m2'
-                }
-            }
+        stage('maven-build') {
             steps {
-                sh 'mvn --version'
-                sh 'pwd'
                 sh 'mvn -B -DskipTests clean package --settings /var/jenkins_home/.m2/settings-docker.xml'
             }
         }
-        stage('docker-run') {
-             agent  { dockerfile true }
+        stage('docker-build') {
+             steps {
+                  sh "mvn install dockerfile:build"
+             }
         }
     }
 }
