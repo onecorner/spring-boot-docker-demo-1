@@ -11,6 +11,8 @@ pipeline {
             steps {
                 sh 'mvn --version'
                 sh 'mvn -B -DskipTests clean package'
+                sh "whereis mvn"
+                sh "pwd"
             }
         }
         stage('docker-run') {
