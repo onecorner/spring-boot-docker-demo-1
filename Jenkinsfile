@@ -10,13 +10,12 @@ pipeline {
             }
             steps {
                 sh 'mvn --version'
-                sh "pwd"
+                sh 'pwd'
                 sh 'mvn -B -DskipTests clean package --settings /var/jenkins_home/.m2/settings-docker.xml'
-
             }
         }
         stage('docker-run') {
-             agent  none
+             agent  { dockerfile true }
               steps {
                   sh "pwd"
                   sh "ls"
