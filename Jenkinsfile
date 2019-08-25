@@ -5,6 +5,10 @@ node {
         sh "ls"
         sh "pwd"
         sh "echo maven-run"
-        sh "mvn -Dmaven.test.failure.ignore clean package"
+        docker.image('maven:3-alpine').inside {
+            state("build"){
+                sh "mvn --version"
+            }
+        }
     }
 }
