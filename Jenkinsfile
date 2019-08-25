@@ -10,7 +10,6 @@ pipeline {
             }
             steps {
                 sh 'mvn --version'
-                sh "whereis mvn"
                 sh "pwd"
                 sh 'mvn -B -DskipTests clean package'
 
