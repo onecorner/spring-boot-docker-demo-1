@@ -13,5 +13,12 @@ pipeline {
                 sh 'mvn -B -DskipTests clean package'
             }
         }
+        stage('docker-run') {
+             agent  none
+              steps {
+                  sh "pwd"
+                  sh "ls"
+               }
+        }
     }
 }
