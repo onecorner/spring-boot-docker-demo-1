@@ -2,7 +2,7 @@ pipeline {
     agent {
          docker {
                image 'maven:3-alpine'
-               args '-v /jenkins/.m2:/root/.m2'
+               args '-v /jenkins/.m2:/root/.m2 '
          }
     }
     stages {
@@ -12,8 +12,9 @@ pipeline {
             }
         }
         stage('docker-build') {
+             agent  none
              steps {
-                  sh "mvn dockerfile:build --settings /var/jenkins_home/.m2/settings-docker.xml"
+                  sh "pwd"
              }
         }
     }
