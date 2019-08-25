@@ -13,7 +13,7 @@ pipeline {
         }
         stage('docker-build') {
              steps {
-                  sh "mvn install dockerfile:build --settings /var/jenkins_home/.m2/settings-docker.xml"
+                  sh "mvn dockerfile:build --settings /var/jenkins_home/.m2/settings-docker.xml"
              }
         }
     }
