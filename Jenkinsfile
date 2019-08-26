@@ -12,18 +12,14 @@ pipeline {
                 sh 'mvn -B -DskipTests clean package --settings /var/jenkins_home/.m2/settings-docker.xml'
             }
         }
-        stage('docker-build') {
-             agent  any
-             steps {
-                  sh "pwd && ls /var/jenkins_home/"
-                  sh "docker container run --rm zenika/alpine-maven mvn dockerfile:build"
-             }
-        }
-        stage('docker-push') {
-             agent  any
-             steps {
-                  sh "docker container run --rm zenika/alpine-maven mvn dockerfile:push"
-             }
+        state('test'){
+            node {
+                    docker.image('maven:3-alpine').inside(){
+                        sh "pwd && ls"
+                        sh "echo ------------------"
+                        sh "./mvnw dockerfile:build"
+                    }
+                }
         }
     }
 }
