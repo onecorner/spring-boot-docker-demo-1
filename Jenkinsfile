@@ -16,13 +16,13 @@ pipeline {
              agent  any
              steps {
                   sh "pwd && ls"
-                  sh "docker run  -v /jenkins/.m2:/root/.m2  --rm maven:3-alpine mvn dockerfile:build --settings /jenkins/.m2/settings-docker.xml"
+                  sh "docker run  -v /jenkins/.m2:/root/.m2  --rm maven:3-alpine mvn dockerfile:build --settings /root/.m2/settings-docker.xml"
              }
         }
         stage('docker-push') {
              agent  any
              steps {
-                  sh "docker run -v /jenkins/.m2:/root/.m2 --rm maven:3-alpine  mvn dockerfile:push --settings /jenkins/.m2/settings-docker.xml"
+                  sh "docker run -v /jenkins/.m2:/root/.m2 --rm maven:3-alpine  mvn dockerfile:push --settings /root/.m2/settings-docker.xml"
              }
         }
     }
