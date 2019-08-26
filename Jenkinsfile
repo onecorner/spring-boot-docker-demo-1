@@ -16,13 +16,13 @@ pipeline {
              agent  any
              steps {
                   sh "pwd && ls /var/jenkins_home/"
-                  sh "docker container run --rm zenika/alpine-maven mvn dockerfile:build"
+                  sh "./mvnw dockerfile:build"
              }
         }
         stage('docker-push') {
              agent  any
              steps {
-                  sh "docker container run --rm zenika/alpine-maven mvn dockerfile:push"
+                  sh "./mvnw dockerfile:push"
              }
         }
     }
