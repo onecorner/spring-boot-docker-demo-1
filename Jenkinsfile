@@ -14,6 +14,9 @@ pipeline {
         }
         stage('docker-build&&run') {
              agent  any
+             tools {
+                     maven 'apache-maven-3.6.1'
+             }
              steps {
                   sh "pwd && ls /var/jenkins_home/"
                   sh "./mvnw dockerfile:build"
