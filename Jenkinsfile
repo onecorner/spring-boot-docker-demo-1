@@ -1,25 +1,28 @@
 pipeline {
-     agent {
-          docker {
-                image 'maven:3-alpine'
-                args '-v /jenkins/.m2:/root/.m2 '
-          }
-     }
+    agent none
     stages {
         stage('maven-build') {
+            agent {
+                     docker {
+                           image 'maven:3-alpine'
+                           args '-v /jenkins/.m2:/root/.m2 '
+                     }
+            }
             steps {
                 sh 'mvn -B -DskipTests clean package --settings /var/jenkins_home/.m2/settings-docker.xml'
             }
         }
-        stage('docker-build') {
+        stage('docker-build&&run') {
+             agent  any
              steps {
-                  sh "pwd && ls /var/jenkins_home/"
-                  sh "./mvnw dockerfile:build"
+                  sh "pwd && ls"
+                  sh "docker container run --rm zenika/alpine-maven mvn dockerfile:build"
              }
         }
         stage('docker-push') {
+             agent  any
              steps {
-                  sh "./mvnw dockerfile:push"
+                  sh "docker container run --rm zenika/alpine-maven mvn dockerfile:push"
              }
         }
     }
