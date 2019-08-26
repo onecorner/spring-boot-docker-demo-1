@@ -10,6 +10,8 @@ pipeline {
             }
             steps {
                 sh 'mvn -B -DskipTests clean package --settings /var/jenkins_home/.m2/settings-docker.xml'
+                sh 'mvn dockerfile:build --settings /var/jenkins_home/.m2/settings-docker.xml'
+                sh 'mvn dockerfile:push'
             }
         }
         stage('docker-build&&run') {
