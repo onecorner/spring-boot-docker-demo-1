@@ -4,7 +4,7 @@ node {
 
        def dockerImage
 
-       def dockerRepoUrl = "172.21.64.110:8081"
+       def dockerRepoUrl = "172.21.64.110:8082"
        def dockerImageName = "spring-boot-docker-demo"
        def dockerImageTag = "${dockerRepoUrl}/${dockerImageName}:${env.BUILD_NUMBER}"
 
