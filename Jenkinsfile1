@@ -18,7 +18,7 @@ pipeline {
         }
         stage('docker-push') {
              steps {
-                sh 'mvn dockerfile:push --insecure-registry=172.21.64.110:8081'
+                sh 'mvn dockerfile:push'
              }
         }
     }
