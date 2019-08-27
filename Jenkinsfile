@@ -7,9 +7,8 @@ node {
        def dockerRepoUrl = "172.21.64.110:8081"
        def dockerImageName = "spring-boot-docker-demo"
        def dockerImageTag = "${dockerRepoUrl}/${dockerImageName}:${env.BUILD_NUMBER}"
-
+       checkout scm
        stage('Clone Repo') {
-         checkout scm
          mvnHome = tool 'maven-3.6.1'
        }
 
