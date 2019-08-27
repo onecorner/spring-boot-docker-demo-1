@@ -13,8 +13,8 @@ node {
        }
 
        stage('Build Project') {
-         sh "ls /var/jenkins_home && ls /jenkins/.m2"
-         sh "'${mvnHome}/bin/mvn' -Dmaven.test.failure.ignore clean package --settings /jenkins/.m2/settings-docker.xml"
+         sh "ls /var/jenkins_home/.m2"
+         sh "'${mvnHome}/bin/mvn' -Dmaven.test.failure.ignore clean package --settings /var/jenkins_home/.m2/settings-docker.xml"
        }
 
    	   stage('Publish Tests Results'){
