@@ -1,25 +1,26 @@
-pipeline {
-    agent {
-          docker {
-                image 'maven:3-alpine'
-                args '-v /jenkins/.m2:/root/.m2  -v /var/run/docker.sock:/var/run/docker.sock'
-          }
-    }
-    stages {
-        stage('maven-build') {
-            steps {
-                sh 'mvn -B -DskipTests clean package --settings /var/jenkins_home/.m2/settings-docker.xml'
-            }
-        }
-        stage('docker-build') {
-             steps {
-                  sh 'mvn dockerfile:build --settings /var/jenkins_home/.m2/settings-docker.xml'
-             }
-        }
-        stage('docker-push') {
-             steps {
-                sh 'mvn dockerfile:push --insecure-registry=172.21.64.110:8081'
-             }
-        }
-    }
+node {
+   stage('Clone Repository') {
+        checkout scm
+   }
+   stage('Build Maven Image') {
+        docker.build("maven-build")
+   }
+
+   stage('Run Maven Container') {
+
+        //Remove maven-build-container if it exists
+        sh " docker rm -f maven-build-container"
+
+        //Run maven image
+        sh "docker run --rm --name maven-build-container maven-build"
+   }
+
+   stage('Deploy Spring Boot Application') {
+
+         //Remove maven-build-container if it exists
+        sh " docker rm -f java-deploy-container"
+
+        sh "docker run --name java-deploy-container --volumes-from maven-build-container -d -p 8080:8080 172.21.64.110:8081/spring-boot-docker-demo"
+   }
+
 }
