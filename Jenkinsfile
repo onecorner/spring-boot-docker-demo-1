@@ -1,29 +1,57 @@
 node {
 
-   stage('Clone Repository') {
-        // Get some code from a GitHub repository
-        checkout scm
+        // reference to maven
+       // ** NOTE: This 'maven-3.6.1' Maven tool must be configured in the Jenkins Global Configuration.
+       def mvnHome = tool 'maven-3.6.1'
 
-   }
-   stage('Build Maven Image') {
-        docker.build("maven-build")
-   }
+       // holds reference to docker image
+       def dockerImage
+       // ip address of the docker private repository(nexus)
 
-   stage('Run Maven Container') {
+       def dockerRepoUrl = "172.21.64.110:8081"
+       def dockerImageName = "spring-boot-docker-demo"
+       def dockerImageTag = "${dockerRepoUrl}/${dockerImageName}:${env.BUILD_NUMBER}"
 
-        //Remove maven-build-container if it exisits
-        sh " docker rm -f maven-build-container"
+       stage('Clone Repo') { // for display purposes
+         checkout scm
+         mvnHome = tool 'maven-3.6.1'
+       }
 
-        //Run maven image
-        sh "docker run --rm --name maven-build-container maven-build"
-   }
+       stage('Build Project') {
+         // build project via maven
+         sh "'${mvnHome}/bin/mvn' -Dmaven.test.failure.ignore clean package"
+       }
 
-   stage('Deploy Spring Boot Application') {
+   	stage('Publish Tests Results'){
+         parallel(
+           publishJunitTestsResultsToJenkins: {
+             echo "Publish junit Tests Results"
+   		  junit '**/target/surefire-reports/TEST-*.xml'
+   		  archive 'target/*.jar'
+           },
+           publishJunitTestsResultsToSonar: {
+             echo "This is branch b"
+         })
+       }
 
-         //Remove maven-build-container if it exisits
-        sh " docker rm -f java-deploy-container"
+    stage('Build Docker Image') {
+       // build docker image
+       sh "whoami"
+       sh "ls -all /var/run/docker.sock"
+       sh "mv ./target/spring-boot-docker-demo*.jar ./data"
 
-        sh "docker run --name java-deploy-container --volumes-from maven-build-container -d -p 8080:8080 172.21.64.110:8081/spring-boot-docker-demo"
-   }
+       dockerImage = docker.build("spring-boot-docker-demo")
+    }
+
+    stage('Deploy Docker Image'){
+
+       // deploy docker image to nexus
+
+       echo "Docker Image Tag Name: ${dockerImageTag}"
+
+       sh "docker login -u admin -p admin123 ${dockerRepoUrl}"
+       sh "docker tag ${dockerImageName} ${dockerImageTag}"
+       sh "docker push ${dockerImageTag}"
+    }
 
 }
