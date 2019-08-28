@@ -1,4 +1,5 @@
 pipeline {
+    def dockerRepoUrl = "172.21.64.110:8082"
     agent {
           docker {
                 image 'maven:3-alpine'
@@ -18,6 +19,7 @@ pipeline {
         }
         stage('docker-push') {
              steps {
+                sh "docker login -u admin -p admin123 ${dockerRepoUrl}"
                 sh 'mvn dockerfile:push'
              }
         }
