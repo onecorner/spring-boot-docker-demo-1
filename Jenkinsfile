@@ -21,8 +21,7 @@ pipeline {
         }
         stage('docker-push') {
              steps {
-                sh "docker login -u admin -p admin123 ${dockerRepoUrl}"
-                sh 'mvn dockerfile:push'
+                sh 'mvn dockerfile:push --settings /var/jenkins_home/.m2/settings-docker.xml'
              }
         }
     }
