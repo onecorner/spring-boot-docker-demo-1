@@ -22,7 +22,7 @@ pipeline {
              }
         }
         stage('docker-run') {
-             agent any
+             agent none
              steps {
                   sh "docker rm -f $(docker ps -q --filter 'name=${appName}')"
                   sh "docker run -p 8080:8080 -d --name app ${dockerImage}"
