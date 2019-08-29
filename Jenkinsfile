@@ -8,7 +8,7 @@ pipeline {
     environment {
           dockerRepoUrl = "172.21.64.110:8082"
           dockerImage = "${dockerRepoUrl}/spring-boot-docker-demo"
-          appName = app
+          appName = "app"
     }
     stages {
         stage('maven-build') {
