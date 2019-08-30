@@ -31,7 +31,7 @@ pipeline {
     }
     post{
                 always{
-                    sh 'docker run -p 8088:8080 -d --name app ${dockerImage}'
+                    sh 'docker run -p 8088:8090 -d --name app ${dockerImage}'
                 }
     }
 }
