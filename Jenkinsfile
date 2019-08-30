@@ -25,6 +25,7 @@ pipeline {
         stage('运行镜像'){
             agent any
             steps {
+                sh 'docker rm -f app'
                 sh 'docker run -p 8080:8080 -d --name app ${dockerImage}'
             }
         }
