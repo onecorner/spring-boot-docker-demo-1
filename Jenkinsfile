@@ -10,13 +10,16 @@ pipeline {
             agent {
                       docker {
                             image 'maven:3-alpine'
-                            args '-v /jenkins/.m2:/root/.m2  -v /var/run/docker.sock:/var/run/docker.sock --settings /var/jenkins_home/.m2/settings-docker.xml'
+                            args '-v /jenkins/.m2:/root/.m2  -v /var/run/docker.sock:/var/run/docker.sock'
                       }
             }
+            environment {
+                    settings = "--settings /var/jenkins_home/.m2/settings-docker.xml"
+             }
             steps {
-                sh 'mvn -B -DskipTests clean package'
-                sh 'mvn dockerfile:build'
-                sh 'mvn dockerfile:push'
+                sh 'mvn -B -DskipTests clean package  ${settings}'
+                sh 'mvn dockerfile:build  ${settings}'
+                sh 'mvn dockerfile:push  ${settings}'
             }
         }
         stage('运行镜像'){
