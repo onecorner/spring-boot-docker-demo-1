@@ -28,10 +28,10 @@ pipeline {
                       sh 'docker rm -f app'
                 }
         }
-        post{
-            always{
-                sh 'docker run -p 8080:8080 -d --name app ${dockerImage}'
-            }
-        }
+    }
+    post{
+                always{
+                    sh 'docker run -p 8080:8080 -d --name app ${dockerImage}'
+                }
     }
 }
