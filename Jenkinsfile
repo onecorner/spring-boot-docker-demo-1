@@ -25,8 +25,15 @@ pipeline {
         stage('运行镜像'){
             agent any
             steps {
-                sh 'docker rm -f app'
-                sh 'docker run -p 8080:8080 -d --name app ${dockerImage}'
+                try{
+                    sh 'docker rm -f app'
+                }
+                catch (exc) {
+                     echo '容器删除失败，没有该容器'
+                }
+                finally{
+                     sh 'docker run -p 8080:8080 -d --name app ${dockerImage}'
+                }
             }
         }
     }
