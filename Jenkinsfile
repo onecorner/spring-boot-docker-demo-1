@@ -19,9 +19,9 @@ pipeline {
                 sh 'mvn dockerfile:push'
             }
         }
-        state('运行镜像'){
+        stage('运行镜像'){
             agent any
-            steps{
+            steps {
                 sh 'docker run -p 8080:8080 -d --name app ${dockerImage}'
             }
         }
